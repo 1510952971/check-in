@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="page_padding">14dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="glass_radius">18dp</dimen>
+    <dimen name="compact_gap">8dp</dimen>
+    <dimen name="greeting_text_size">19sp</dimen>
+    <dimen name="toggle_width">64dp</dimen>
+    <dimen name="toggle_height">38dp</dimen>
+    <dimen name="shift_card_height">176dp</dimen>
+    <dimen name="shift_card_padding">10dp</dimen>
+    <dimen name="shift_emoji_size">30sp</dimen>
+    <dimen name="shift_title_size">12sp</dimen>
+    <dimen name="shift_time_size">25sp</dimen>
+    <dimen name="shift_hint_size">10sp</dimen>
+    <dimen name="frequency_label_size">10sp</dimen>
+    <dimen name="frequency_option_size">11sp</dimen>
+    <dimen name="status_tile_height">106dp</dimen>
+</resources>

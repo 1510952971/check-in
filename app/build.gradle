@@ -1,0 +1,62 @@
+plugins {
+    id "com.android.application"
+}
+
+// GitHub Actions injects owner/repository so release builds know where to
+// check for later updates. Local builds can leave it empty and bind in-app.
+def githubUpdateRepo = (project.findProperty("githubUpdateRepo") ?: "").toString()
+def escapedGithubUpdateRepo = githubUpdateRepo
+        .replace("\\", "\\\\")
+        .replace("\"", "\\\"")
+// Signing credentials stay outside the repository in local environment
+// variables or encrypted GitHub Actions secrets.
+def releaseStorePath = System.getenv("CLOCKIN_KEYSTORE_FILE")
+
+android {
+    namespace "com.clockin.assistant"
+    compileSdk 35
+    buildToolsVersion "35.0.0"
+
+    defaultConfig {
+        applicationId "com.clockin.assistant"
+        minSdk 26
+        targetSdk 35
+        versionCode 5
+        versionName "1.3.0"
+        buildConfigField(
+                "String",
+                "DEFAULT_GITHUB_REPOSITORY",
+                "\"${escapedGithubUpdateRepo}\""
+        )
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    signingConfigs {
+        release {
+            if (releaseStorePath) {
+                storeFile file(releaseStorePath)
+                storePassword System.getenv("CLOCKIN_KEYSTORE_PASSWORD")
+                keyAlias System.getenv("CLOCKIN_KEY_ALIAS")
+                keyPassword System.getenv("CLOCKIN_KEY_PASSWORD")
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            if (releaseStorePath) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}

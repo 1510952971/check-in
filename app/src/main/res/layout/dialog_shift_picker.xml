@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_surface"
+    android:orientation="vertical"
+    android:padding="22dp">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/ink"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/picker_subtitle"
+        android:textColor="@color/ink_muted"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <NumberPicker
+            android:id="@+id/picker_hour"
+            android:layout_width="96dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:layout_width="36dp"
+            android:layout_height="match_parent"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="@string/time_separator"
+            android:textColor="@color/primary_dark"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <NumberPicker
+            android:id="@+id/picker_minute"
+            android:layout_width="96dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/picker_mood_title"
+        android:textColor="@color/ink_muted"
+        android:textSize="11sp"
+        android:textStyle="bold" />
+
+    <RadioGroup
+        android:id="@+id/radio_mood"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginTop="7dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/mood_working"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="3dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_frequency_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/mood_working"
+            android:textColor="@color/ink"
+            android:textSize="11sp" />
+
+        <RadioButton
+            android:id="@+id/mood_slacking"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_frequency_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/mood_slacking"
+            android:textColor="@color/ink"
+            android:textSize="11sp" />
+
+        <RadioButton
+            android:id="@+id/mood_home"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_frequency_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/mood_home"
+            android:textColor="@color/ink"
+            android:textSize="11sp" />
+
+        <RadioButton
+            android:id="@+id/mood_zen"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="3dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_frequency_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/mood_zen"
+            android:textColor="@color/ink"
+            android:textSize="11sp" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        tools:ignore="ButtonStyle">
+
+        <Button
+            android:id="@+id/dialog_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="0.8"
+            android:background="@drawable/bg_glass_button"
+            android:text="@string/picker_cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/ink"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/dialog_save"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1.2"
+            android:background="@drawable/bg_dialog_action"
+            android:text="@string/picker_save"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_surface"
+    android:orientation="vertical"
+    android:padding="22dp">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/ink"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/dialog_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:lineSpacingExtra="3dp"
+        android:textColor="@color/ink_muted"
+        android:textSize="13sp" />
+
+    <Button
+        android:id="@+id/button_view_github"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/bg_glass_button"
+        android:text="@string/update_view_github"
+        android:textAllCaps="false"
+        android:textColor="@color/primary_dark"
+        android:textSize="12sp"
+        tools:ignore="ButtonStyle" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        tools:ignore="ButtonStyle">
+
+        <Button
+            android:id="@+id/dialog_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="0.8"
+            android:background="@drawable/bg_glass_button"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/ink"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/button_download_update"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1.2"
+            android:background="@drawable/bg_dialog_action"
+            android:text="@string/update_download"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_surface"
+    android:orientation="vertical"
+    android:padding="22dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/update_repo_dialog_title"
+        android:textColor="@color/ink"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:lineSpacingExtra="2dp"
+        android:text="@string/update_repo_dialog_message"
+        android:textColor="@color/ink_muted"
+        android:textSize="12sp" />
+
+    <EditText
+        android:id="@+id/input_update_repository"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_update_input"
+        android:hint="@string/update_repo_hint"
+        android:importantForAutofill="no"
+        android:inputType="textUri"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="@color/ink"
+        android:textColorHint="@color/ink_muted"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        tools:ignore="ButtonStyle">
+
+        <Button
+            android:id="@+id/dialog_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="0.8"
+            android:background="@drawable/bg_glass_button"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/ink"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/dialog_save"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1.2"
+            android:background="@drawable/bg_dialog_action"
+            android:text="@string/update_repo_save"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

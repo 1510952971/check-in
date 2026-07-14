@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ink">#12202A</color>
+    <color name="ink_muted">#5C6C74</color>
+    <color name="primary">#008C85</color>
+    <color name="primary_dark">#075B61</color>
+    <color name="primary_soft">#DDFBF6</color>
+    <color name="accent">#FF9F1C</color>
+    <color name="accent_soft">#FFF1CC</color>
+    <color name="neon_green">#00F5D4</color>
+    <color name="neon_blue">#66E3FF</color>
+    <color name="night_blue">#0D1117</color>
+    <color name="night_surface">#161B22</color>
+    <color name="night_purple">#8A2BE2</color>
+    <color name="day_yellow">#FFF3B0</color>
+    <color name="day_blue">#CAECFF</color>
+    <color name="glass_fill">#C7FFFFFF</color>
+    <color name="glass_fill_soft">#9EFFFFFF</color>
+    <color name="glass_border">#78FFFFFF</color>
+    <color name="pod_surface">#E0101624</color>
+    <color name="pod_text">#F3FBFF</color>
+    <color name="pod_muted">#9CB3C0</color>
+    <color name="warning">#FFB13B</color>
+    <color name="danger">#FF5C67</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_alt">#EDF6F6</color>
+    <color name="divider">#38FFFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="icon_background">#FFFFFF</color>
+</resources>
