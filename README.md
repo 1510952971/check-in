@@ -101,4 +101,5 @@ SHA-256 文件到 GitHub Releases。版本标签应与 `app/build.gradle` 中的
 - [架构与任务完成判定](docs/ARCHITECTURE.md)
 - [新版本上传与发布操作手册](docs/RELEASE_MANUAL.md)
 - [GitHub Release 与签名配置](docs/RELEASE_GUIDE.md)
+- [Android 签名管理器与跨电脑恢复手册](tools/android-signing-manager/README.md)
 - [参与开发与测试清单](CONTRIBUTING.md)

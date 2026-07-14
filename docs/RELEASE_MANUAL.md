@@ -60,10 +60,16 @@ v1.3.1
 GitHub Secrets 不能替代本地备份，因为保存后无法从 GitHub 页面重新读取
 完整值。
 
+仓库提供了 [Android 签名管理器](../tools/android-signing-manager/README.md)。
+双击其中的 `Start-AndroidSigningManager.cmd`，导入 Check in 证书后点击
+“导出便携套件”，可以把证书、登记信息和恢复密码保存为由主密码保护的
+`.asmvault.gpg` 加密包。该便携包可放在 NAS 和离线移动硬盘中，并可在其他
+Windows 电脑上恢复 Windows 凭据管理器。主密码必须单独保存在密码管理器中。
+
 当前正式证书的 SHA-256 指纹应为：
 
 ```text
-a2898c5c80d7661db0e6e1c5cfc3ac1eeebe579c122483aeabc3e11661abaec35
+a2898c5c80d7661db0e6e1c5cfc3ac1eeebe579c12483aeabc3e11661abaec35
 ```
 
 每次正式构建完成后，签名验证输出中的证书 SHA-256 应与这个值一致。

@@ -7,3 +7,7 @@ app/build/
 .tools/
 .signing/
 test-artifacts/
+*.asmvault.gpg
+Android-Signing-Vault/
+Android-Signing-Manager-Portable-*/
+tools/android-signing-manager/runtime/
