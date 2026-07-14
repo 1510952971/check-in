@@ -75,7 +75,7 @@ powershell.exe -ExecutionPolicy Bypass `
 
 ```text
 app\build\outputs\apk\debug\app-debug.apk
-app\build\outputs\apk\release\check-in-1.3.0.apk
+app\build\outputs\apk\release\check-in-<versionName>.apk
 ```
 
 ## GitHub 自动更新
@@ -99,5 +99,6 @@ SHA-256 文件到 GitHub Releases。版本标签应与 `app/build.gradle` 中的
 
 - [用户操作手册](docs/USER_GUIDE.md)
 - [架构与任务完成判定](docs/ARCHITECTURE.md)
+- [新版本上传与发布操作手册](docs/RELEASE_MANUAL.md)
 - [GitHub Release 与签名配置](docs/RELEASE_GUIDE.md)
 - [参与开发与测试清单](CONTRIBUTING.md)
