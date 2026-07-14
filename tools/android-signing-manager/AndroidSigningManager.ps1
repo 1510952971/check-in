@@ -230,6 +230,7 @@ function Show-MetadataDialog {
     $dialog.MinimizeBox = $false
     $dialog.StartPosition = "CenterParent"
     $dialog.Font = New-Object Drawing.Font("Segoe UI", 9)
+    $dialog.AutoScaleMode = "None"
 
     $initial = @{
         AppName = ""
@@ -363,6 +364,7 @@ function Show-ImportDialog {
     $dialog.MinimizeBox = $false
     $dialog.StartPosition = "CenterParent"
     $dialog.Font = New-Object Drawing.Font("Segoe UI", 9)
+    $dialog.AutoScaleMode = "None"
 
     $fields = @(
         @{ Key = "AppName"; Label = $strings.AppName; Password = $false },
@@ -516,6 +518,7 @@ function Show-PortablePasswordDialog {
     $dialog.MinimizeBox = $false
     $dialog.StartPosition = "CenterParent"
     $dialog.Font = New-Object Drawing.Font("Segoe UI", 9)
+    $dialog.AutoScaleMode = "None"
 
     $dialog.Controls.Add(
         (New-DialogLabel `
@@ -629,6 +632,7 @@ function Show-RecoveryDialog {
     $dialog.MinimizeBox = $false
     $dialog.StartPosition = "CenterParent"
     $dialog.Font = New-Object Drawing.Font("Segoe UI", 9)
+    $dialog.AutoScaleMode = "None"
 
     $hint = New-Object Windows.Forms.Label
     $hint.Text = $strings.RecoveryHint
@@ -693,6 +697,7 @@ function Show-SecretsDialog {
         $dialog.MinimizeBox = $false
         $dialog.StartPosition = "CenterParent"
         $dialog.Font = New-Object Drawing.Font("Segoe UI", 9)
+        $dialog.AutoScaleMode = "None"
 
         $hint = New-Object Windows.Forms.Label
         $hint.Text = $strings.SecretsHint
@@ -784,17 +789,50 @@ function New-ToolbarButton {
 
 $form = New-Object Windows.Forms.Form
 $form.Text = $strings.Title
-$form.ClientSize = New-Object Drawing.Size(1120, 690)
-$form.MinimumSize = New-Object Drawing.Size(930, 600)
+$form.ClientSize = New-Object Drawing.Size(1000, 690)
+$form.MinimumSize = New-Object Drawing.Size(820, 680)
 $form.StartPosition = "CenterScreen"
 $form.Font = New-Object Drawing.Font("Segoe UI", 9)
+$form.AutoScaleMode = "None"
 
-$toolbar = New-Object Windows.Forms.FlowLayoutPanel
-$toolbar.Dock = "Top"
-$toolbar.Height = 88
+$rootLayout = New-Object Windows.Forms.TableLayoutPanel
+$rootLayout.Dock = "Fill"
+$rootLayout.ColumnCount = 1
+$rootLayout.RowCount = 3
+$rootLayout.Margin = New-Object Windows.Forms.Padding(0)
+$rootLayout.Padding = New-Object Windows.Forms.Padding(0)
+$rootLayout.ColumnStyles.Add(
+    (New-Object Windows.Forms.ColumnStyle("Percent", 100))
+) | Out-Null
+$rootLayout.RowStyles.Add(
+    (New-Object Windows.Forms.RowStyle("Absolute", 88))
+) | Out-Null
+$rootLayout.RowStyles.Add(
+    (New-Object Windows.Forms.RowStyle("Percent", 100))
+) | Out-Null
+$rootLayout.RowStyles.Add(
+    (New-Object Windows.Forms.RowStyle("Absolute", 24))
+) | Out-Null
+$form.Controls.Add($rootLayout)
+
+$toolbar = New-Object Windows.Forms.TableLayoutPanel
+$toolbar.Dock = "Fill"
 $toolbar.Padding = New-Object Windows.Forms.Padding(5, 0, 5, 0)
-$toolbar.WrapContents = $true
-$form.Controls.Add($toolbar)
+$toolbar.ColumnCount = 5
+$toolbar.RowCount = 2
+$toolbar.GrowStyle = "FixedSize"
+for ($columnIndex = 0; $columnIndex -lt 5; $columnIndex++) {
+    $toolbar.ColumnStyles.Add(
+        (New-Object Windows.Forms.ColumnStyle("Percent", 20))
+    ) | Out-Null
+}
+$toolbar.RowStyles.Add(
+    (New-Object Windows.Forms.RowStyle("Percent", 50))
+) | Out-Null
+$toolbar.RowStyles.Add(
+    (New-Object Windows.Forms.RowStyle("Percent", 50))
+) | Out-Null
+$rootLayout.Controls.Add($toolbar, 0, 0)
 
 $statusStrip = New-Object Windows.Forms.StatusStrip
 $script:MainStatusLabel = New-Object Windows.Forms.ToolStripStatusLabel
@@ -805,16 +843,14 @@ $vaultStatus = New-Object Windows.Forms.ToolStripStatusLabel
 $vaultStatus.Text = "$($strings.VaultLocation): $VaultRoot"
 $statusStrip.Items.Add($script:MainStatusLabel) | Out-Null
 $statusStrip.Items.Add($vaultStatus) | Out-Null
-$form.Controls.Add($statusStrip)
+$statusStrip.Dock = "Fill"
+$statusStrip.SizingGrip = $false
+$rootLayout.Controls.Add($statusStrip, 0, 2)
 
 $split = New-Object Windows.Forms.SplitContainer
 $split.Dock = "Fill"
 $split.Orientation = "Horizontal"
-$split.SplitterDistance = 385
-$split.Panel1MinSize = 250
-$split.Panel2MinSize = 170
-$form.Controls.Add($split)
-$form.Controls.SetChildIndex($toolbar, 0)
+$rootLayout.Controls.Add($split, 0, 1)
 
 $grid = New-Object Windows.Forms.DataGridView
 $grid.Dock = "Fill"
@@ -1308,6 +1344,16 @@ $toolbar.Controls.Add($refreshButton)
 
 $form.Add_FormClosing({
     Clear-SensitiveClipboard
+})
+
+$form.Add_Shown({
+    $split.Panel1MinSize = 250
+    $split.Panel2MinSize = 170
+    $availableHeight = $split.Height - $split.SplitterWidth
+    $split.SplitterDistance = [Math]::Min(
+        385,
+        [Math]::Max(250, $availableHeight - 170)
+    )
 })
 
 Initialize-SigningVault -VaultRoot $VaultRoot | Out-Null
