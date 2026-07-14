@@ -65,6 +65,9 @@ GitHub Secrets 不能替代本地备份，因为保存后无法从 GitHub 页面
 “导出便携套件”，可以把证书、登记信息和恢复密码保存为由主密码保护的
 `.asmvault.gpg` 加密包。该便携包可放在 NAS 和离线移动硬盘中，并可在其他
 Windows 电脑上恢复 Windows 凭据管理器。主密码必须单独保存在密码管理器中。
+保存位置可以使用 `E:\Android-Backup`、`\\NAS\共享目录\Android-Backup`
+或 `smb://NAS/共享目录/Android-Backup`，必须具体到实际共享文件夹，不能只
+选择“此电脑”“网络”或 NAS 设备名称。
 
 当前正式证书的 SHA-256 指纹应为：
 
