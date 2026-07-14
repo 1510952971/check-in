@@ -502,6 +502,97 @@ function Show-ImportDialog {
     return $result
 }
 
+function Show-PortableDestinationDialog {
+    $dialog = New-Object Windows.Forms.Form
+    $dialog.Text = $strings.BackupPathTitle
+    $dialog.ClientSize = New-Object Drawing.Size(720, 235)
+    $dialog.FormBorderStyle = "FixedDialog"
+    $dialog.MaximizeBox = $false
+    $dialog.MinimizeBox = $false
+    $dialog.StartPosition = "CenterParent"
+    $dialog.Font = New-Object Drawing.Font("Segoe UI", 9)
+    $dialog.AutoScaleMode = "None"
+
+    $label = New-Object Windows.Forms.Label
+    $label.Text = $strings.BackupPath
+    $label.Left = 22
+    $label.Top = 31
+    $label.Width = 120
+    $dialog.Controls.Add($label)
+
+    $pathBox = New-Object Windows.Forms.TextBox
+    $pathBox.Left = 145
+    $pathBox.Top = 27
+    $pathBox.Width = 455
+    $dialog.Controls.Add($pathBox)
+
+    $browseButton = New-Object Windows.Forms.Button
+    $browseButton.Text = $strings.BackupPathBrowse
+    $browseButton.Left = 610
+    $browseButton.Top = 25
+    $browseButton.Width = 80
+    $browseButton.Height = 28
+    $browseButton.Add_Click({
+        $folderDialog = New-Object Windows.Forms.FolderBrowserDialog
+        $folderDialog.Description = $strings.SelectBackupFolder
+        if ($folderDialog.ShowDialog($dialog) -eq "OK") {
+            $pathBox.Text = $folderDialog.SelectedPath
+        }
+        $folderDialog.Dispose()
+    })
+    $dialog.Controls.Add($browseButton)
+
+    $hint = New-Object Windows.Forms.Label
+    $hint.Text = $strings.BackupPathHint
+    $hint.Left = 22
+    $hint.Top = 75
+    $hint.Width = 668
+    $hint.Height = 72
+    $hint.ForeColor = [Drawing.Color]::DimGray
+    $dialog.Controls.Add($hint)
+
+    $okButton = New-Object Windows.Forms.Button
+    $okButton.Text = $strings.Save
+    $okButton.Left = 515
+    $okButton.Top = 175
+    $okButton.Width = 80
+    $okButton.Height = 30
+    $okButton.Add_Click({
+        try {
+            $resolvedPath = Resolve-PortableDestinationPath `
+                -Path $pathBox.Text
+            $dialog.Tag = $resolvedPath
+            $dialog.DialogResult = "OK"
+            $dialog.Close()
+        } catch {
+            Show-UiError -Message (
+                $strings.BackupPathInvalid +
+                "`n`n" +
+                $_.Exception.Message
+            )
+        }
+    })
+    $dialog.Controls.Add($okButton)
+
+    $cancelButton = New-Object Windows.Forms.Button
+    $cancelButton.Text = $strings.Cancel
+    $cancelButton.Left = 610
+    $cancelButton.Top = 175
+    $cancelButton.Width = 80
+    $cancelButton.Height = 30
+    $cancelButton.DialogResult = "Cancel"
+    $dialog.Controls.Add($cancelButton)
+    $dialog.AcceptButton = $okButton
+    $dialog.CancelButton = $cancelButton
+
+    $result = $null
+    if ($dialog.ShowDialog() -eq "OK") {
+        $result = [string]$dialog.Tag
+    }
+    $dialog.Dispose()
+    return $result
+}
+
 function Show-PortablePasswordDialog {
     param(
         [bool]$ConfirmPassword = $false
@@ -1234,14 +1325,10 @@ $backupButton = New-ToolbarButton `
     -OnClick {
         $masterPassword = $null
         try {
-            $folderDialog = New-Object Windows.Forms.FolderBrowserDialog
-            $folderDialog.Description = $strings.SelectBackupFolder
-            if ($folderDialog.ShowDialog($form) -ne "OK") {
-                $folderDialog.Dispose()
+            $destination = Show-PortableDestinationDialog
+            if ([string]::IsNullOrWhiteSpace($destination)) {
                 return
             }
-            $destination = $folderDialog.SelectedPath
-            $folderDialog.Dispose()
             $masterPassword = Show-PortablePasswordDialog `
                 -ConfirmPassword $true
             if ($null -eq $masterPassword) {

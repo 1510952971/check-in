@@ -45,6 +45,22 @@ function Remove-TestRoot {
 
 try {
     Remove-TestRoot
+    $resolvedSmbPath = Resolve-PortableDestinationPath `
+        -Path "smb://nas/backup/Android"
+    if ($resolvedSmbPath -ne "\\nas\backup\Android") {
+        throw "SMB portable destination conversion failed."
+    }
+    $invalidPathRejected = $false
+    try {
+        Resolve-PortableDestinationPath -Path "::{VIRTUAL}" |
+            Out-Null
+    } catch {
+        $invalidPathRejected = $true
+    }
+    if (-not $invalidPathRejected) {
+        throw "A Windows virtual path was accepted as a backup folder."
+    }
+
     $app = New-SigningApp `
         -AppName "Smoke Test" `
         -PackageId $packageId `
@@ -176,6 +192,8 @@ try {
         BackupCreated = $true
         PortableBackupVerified = $portableVerification.Valid
         WrongPasswordRejected = $wrongPasswordRejected
+        SmbPathSupported = ($resolvedSmbPath -eq "\\nas\backup\Android")
+        VirtualPathRejected = $invalidPathRejected
         PortableBundleCreated = $true
         RestoredApps = $restoreResult.RestoredApps
         ExistingRestoreVerified = (

@@ -195,6 +195,65 @@ function Initialize-SigningVault {
     return $fullRoot
 }
 
+function Resolve-PortableDestinationPath {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)][string]$Path
+    )
+
+    $candidate = $Path.Trim().Trim('"')
+    if ([string]::IsNullOrWhiteSpace($candidate)) {
+        throw "Select or enter a backup destination folder."
+    }
+    if ($candidate.StartsWith("::")) {
+        throw (
+            "Select a real folder, not This PC, Network, or another " +
+            "Windows virtual location."
+        )
+    }
+    if ($candidate -match '^smb://') {
+        try {
+            $uri = New-Object Uri($candidate)
+        } catch {
+            throw "The SMB address is invalid."
+        }
+        $relativePath = [Uri]::UnescapeDataString(
+            $uri.AbsolutePath.TrimStart("/")
+        ).Replace("/", "\")
+        if ([string]::IsNullOrWhiteSpace($uri.Host) -or
+            [string]::IsNullOrWhiteSpace($relativePath)) {
+            throw (
+                "An SMB address must include a server and shared folder, " +
+                "for example smb://nas/backup."
+            )
+        }
+        $candidate = "\\$($uri.Host)\$relativePath"
+    } elseif ($candidate -match '^file://') {
+        try {
+            $candidate = (New-Object Uri($candidate)).LocalPath
+        } catch {
+            throw "The file address is invalid."
+        }
+    } elseif ($candidate -match '^[A-Za-z][A-Za-z0-9+.-]*://') {
+        throw (
+            "Use a Windows path, UNC path, file:// address, or smb:// " +
+            "address for the backup destination."
+        )
+    }
+
+    if (-not [IO.Path]::IsPathRooted($candidate)) {
+        throw (
+            "Use an absolute path such as E:\Android-Backup or " +
+            "\\NAS\Backup\Android."
+        )
+    }
+    try {
+        return [IO.Path]::GetFullPath($candidate)
+    } catch {
+        throw "The backup destination path format is invalid."
+    }
+}
+
 function Get-CredentialTarget {
     param(
         [Parameter(Mandatory = $true)][string]$PackageId
@@ -403,11 +462,15 @@ function ConvertTo-GpgFilePath {
 
     $fullPath = [IO.Path]::GetFullPath($Path)
     $gpgPath = Get-GpgPath
-    if ($gpgPath -match '\\Git\\usr\\bin\\gpg\.exe$' -and
-        $fullPath -match '^([A-Za-z]):\\(.*)$') {
-        $drive = $Matches[1].ToLowerInvariant()
-        $remainder = $Matches[2].Replace("\", "/")
-        return "/$drive/$remainder"
+    if ($gpgPath -match '\\Git\\usr\\bin\\gpg\.exe$') {
+        if ($fullPath -match '^([A-Za-z]):\\(.*)$') {
+            $drive = $Matches[1].ToLowerInvariant()
+            $remainder = $Matches[2].Replace("\", "/")
+            return "/$drive/$remainder"
+        }
+        if ($fullPath.StartsWith("\\")) {
+            return "//" + $fullPath.Substring(2).Replace("\", "/")
+        }
     }
     return $fullPath
 }
@@ -1711,7 +1774,8 @@ function Export-PortableSigningVault {
     )
 
     Assert-PortableBackupPassword -MasterPassword $MasterPassword
-    $fullDestinationRoot = [IO.Path]::GetFullPath($DestinationRoot)
+    $fullDestinationRoot = Resolve-PortableDestinationPath `
+        -Path $DestinationRoot
     New-Item -ItemType Directory -Force -Path $fullDestinationRoot |
         Out-Null
     if ([string]::IsNullOrWhiteSpace($FileName)) {
@@ -2064,7 +2128,8 @@ function Export-PortableSigningManagerBundle {
     )
 
     Assert-PortableBackupPassword -MasterPassword $MasterPassword
-    $fullDestinationRoot = [IO.Path]::GetFullPath($DestinationRoot)
+    $fullDestinationRoot = Resolve-PortableDestinationPath `
+        -Path $DestinationRoot
     New-Item -ItemType Directory -Force -Path $fullDestinationRoot |
         Out-Null
     $timestamp = [DateTime]::Now.ToString("yyyyMMdd-HHmmss")
@@ -2284,6 +2349,7 @@ function Import-CheckInSigning {
 Export-ModuleMember -Function @(
     "Get-DefaultSigningVaultRoot",
     "Initialize-SigningVault",
+    "Resolve-PortableDestinationPath",
     "Get-KeytoolPath",
     "Get-GpgPath",
     "New-SigningApp",
